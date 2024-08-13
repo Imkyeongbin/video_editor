@@ -14,8 +14,14 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
+# 디렉토리 생성 함수
+def create_directories():
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    os.makedirs(app.config['FINAL_FOLDER'], exist_ok=True)
+
 def _setup():
     db.create_all()
+    create_directories()
     
 app.before_request(_setup)
 
