@@ -4,6 +4,7 @@ import os
 import uuid
 from models import db, Video, TrimRequest, ConcatRequest, FinalVideo
 from tasks import build_ffmpeg_commands, execute_ffmpeg_commands
+from views.index import index as index_page
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -13,9 +14,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-@app.before_first_request
-def create_tables():
+def _setup():
     db.create_all()
+    
+app.before_request(_setup)
+
+# 블루 프린트 등록
+app.register_blueprint(index_page)
 
 # 동영상 업로드
 @app.route('/upload', methods=['POST'])
@@ -119,4 +124,5 @@ def list_videos():
     })
 
 if __name__ == '__main__':
+    
     app.run(debug=True)
