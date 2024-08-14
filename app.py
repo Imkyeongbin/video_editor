@@ -33,20 +33,27 @@ app.register_blueprint(index_page)
 def upload_video():
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
-    file = request.files['file']
-    if file.filename == '':
+    
+    files = request.files.getlist('file')
+    
+    if not files or any(file.filename == '' for file in files):
         return jsonify({"error": "No selected file"}), 400
 
-    if file:
-        filename = secure_filename(file.filename)
-        video_id = str(uuid.uuid4())
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    video_ids = []
 
-        video = Video(id=video_id, filename=filename)
-        db.session.add(video)
-        db.session.commit()
+    for file in files:
+        if file:
+            filename = secure_filename(file.filename)
+            video_id = str(uuid.uuid4())
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        return jsonify({"video_id": video_id}), 201
+            video = Video(id=video_id, filename=filename)
+            db.session.add(video)
+            video_ids.append(video_id)
+
+    db.session.commit()
+
+    return jsonify({"video_ids": video_ids}), 201
 
 # 트림 요청
 @app.route('/trim', methods=['POST'])

@@ -9,7 +9,7 @@ def main_page():
     <h3>1. 동영상 업로드</h3>
     <p><strong>POST</strong> <code>/upload</code></p>
     <ul>
-        <li><strong>파일</strong>: <code>multipart/form-data</code></li>
+        <li><strong>파일</strong>: <code>`multipart/form-data`, 키명 = file (필수)</code></li>
         <li><strong>응답</strong>:</li>
         <ul>
             <li>성공: <code>{"video_id": "&lt;video_id&gt;"}</code></li>
