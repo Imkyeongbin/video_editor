@@ -31,7 +31,7 @@ def main_page():
     <h3>3. 이어 붙이기 요청</h3>
     <p><strong>POST</strong> <code>/concat</code></p>
     <ul>
-        <li><strong>매개변수</strong>: <code>video_ids</code> (ID 목록, 필수)</li>
+        <li><strong>매개변수</strong>: <code>video_ids</code> (ID 목록(리스트 형태-[]), 필수)</li>
     </ul>
 
     <h3>4. 명령 작업 수행</h3>
