@@ -2,7 +2,7 @@ from flask import current_app, jsonify
 import os
 import uuid
 from models import db, TrimRequest, ConcatRequest, FinalVideo
-from tasks import build_ffmpeg_commands, execute_ffmpeg_commands
+from tasks import process_videos_async  # 수정된 함수 이름을 가져옵니다.
 from . import process_bp
 
 @process_bp.route('/process', methods=['POST'])
@@ -14,8 +14,7 @@ def process_videos():
     final_filename = f"{final_video_id}.mp4"
     final_filepath = os.path.join(current_app.config['FINAL_FOLDER'], final_filename)
 
-    commands = build_ffmpeg_commands(trim_requests, concat_requests, current_app.config['UPLOAD_FOLDER'], final_filepath)
-    execute_ffmpeg_commands(commands)
+    process_videos_async(trim_requests, concat_requests, current_app.config['UPLOAD_FOLDER'], final_filepath)
 
     final_video = FinalVideo(id=final_video_id, filename=final_filename)
     db.session.add(final_video)
