@@ -30,7 +30,7 @@
 
 **POST** `/upload`
 
-- **파일**: `multipart/form-data`, 키명 = file (필수)
+- **파일**: `multipart/form-data`, 키명 = file (필수, 여러 파일 가능)
 - **응답**: 
     - 성공: `{"video_id": "<video_id>"}`
     - 실패: `{"error": "No file part"}`
